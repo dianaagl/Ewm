@@ -1,0 +1,6 @@
+*.o
+debug/
+release/
+Makefile*
+moc_*.cpp
+object_sctipt.*.*
