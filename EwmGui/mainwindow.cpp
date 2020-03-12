@@ -115,19 +115,19 @@ void MainWindow::createStack()
 }
 
 void MainWindow::on_NewButton_clicked(){
-    testPath = QDir::homePath();
+    //testPath = QDir::homePath();
     codeeditor->setPlainText("");
 }
 
 void MainWindow::on_OpenButton_clicked(){
 
-    QString file_path =  QDir::homePath();
+    QString file_path =  testPath;
     file_path = QFileDialog::getOpenFileName(this, tr("Open File"),
                                                                file_path,
                                                                tr("Text files (*.txt)"));
 
     ewmPrac->setProgramCode(file_path);
-
+    testPath = file_path;
 
     codeeditor->setPlainText(ewmPrac->getProgramCode());
     errorWindow->addItems(*ewmPrac->prog->errorWindow);
@@ -146,11 +146,13 @@ void MainWindow::on_SaveAsButton_clicked()
                                             QDir::homePath(),
                                             tr("Text files (*.txt)"));
    ewmPrac->testPath = FilePath;
+   testPath = FilePath;
    ewmPrac->saveProgram(codeeditor->toPlainText());
 }
 
 MainWindow::~MainWindow()
 {
+
 
 }
 
@@ -176,6 +178,8 @@ bool MainWindow::makeStepUpdate()
 
 bool MainWindow::makeStep()
 {
+    if (ewmPrac->prog->currLine >= (ewmPrac->prog->lineCount-1))
+           allMemory->stack.clear();
 
     if(!ewmPrac->makeStep())
     {
@@ -223,6 +227,7 @@ void MainWindow::on_runButton_clicked()
     errorWindow->clear();
     if (!ewmPrac->prog->isCompiled())
     {
+        errorWindow->addItems(*ewmPrac->prog->errorWindow);
         errorWindow->insertItem(0, tr("Some errors in project:"));
         return;
     }
@@ -286,6 +291,7 @@ void MainWindow::on_downloadTestsetButton_clicked()
                                                        tr("Testset files (*.testset)"));
     errorWindow->clear();
     ewmPrac->downloadTestset(tmpTestPath);
+    testPath = tmpTestPath;
     updateRegisters();
     updateMemoryTable();
     errorWindow->addItems(*ewmPrac->prog->errorWindow);

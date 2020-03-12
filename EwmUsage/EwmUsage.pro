@@ -16,7 +16,9 @@ SOURCES = \
 
 CONFIG += console
 
-win32: LIBS += -L$$OUT_PWD/../EwmTesting/ -lEwmTesting
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../EwmTesting/release/ -lEwmTesting
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../EwmTesting/debug/ -lEwmTesting
+
 macx: LIBS += -L$$OUT_PWD/../EwmTesting/ -lEwmTesting.1.0.0
 unix: LIBS += -L$$OUT_PWD/../EwmTesting/ -lEwmTesting
 

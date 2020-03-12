@@ -15,7 +15,8 @@
 #define LABEL_NUMBER_POINTER 52
 #define LABEL_WORD 52
 #define LABEL_WORD_POINTER 53
-#define TIME_LIMIT 1
+#define TIME_LIMIT 10
+
 class Progaramm
 {
 public:
