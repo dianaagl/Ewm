@@ -13,9 +13,30 @@ EwmTesting::EwmTesting(QString  codeFilename, QString  testFileName)
     //prog->print(codeFilename.toStdString().c_str());
     qDebug() <<"debug started";
     prog = new Progaramm(allMemory);
-    setProgramCode(codeFilename);
+    if (codeFilename.toStdString() != "") {
+        QString str;
+
+        QFile file( codeFilename);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream *in;
+        in = new QTextStream(&file);
+        str = in->readAll();
+        file.close();
+        setProgramCode(str, codeFilename);
+    }
+
     //prog->print(progText.toStdString().c_str());
-    downloadTestset(testFileName);
+    if (testFileName.toStdString() != "") {
+        QString str;
+
+        QFile file( testFileName);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        QTextStream *in;
+        in = new QTextStream(&file);
+        str = in->readAll();
+        file.close();
+        downloadTestset(str, testFileName);
+    }
      timer.start();
 }
 EwmTesting::EwmTesting(){
@@ -57,17 +78,8 @@ bool EwmTesting::isCorrect(QMap<QString, int> *answer) {
     return isOK;
 }
 
-bool EwmTesting::downloadTestset(QString filename)
+bool EwmTesting::downloadTestset(QString tmpTestText, QString fileName)
 {
-
-    if (filename.toStdString() != "" ){
-        QFile *testset = new QFile(filename);
-        testPath = filename;
-        testset->open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream *in;
-        in = new QTextStream(testset);
-        QString tmpTestText = in->readAll();
-        testset->close();
         if(parser != NULL) delete parser;
         parser = new TestsetParser(tmpTestText);
         if (!parser->isValid()) {
@@ -78,15 +90,8 @@ bool EwmTesting::downloadTestset(QString filename)
         }
 
         testText = tmpTestText;
-        prog->print("Testset downloaded from "  + filename);
+        prog->print("Testset downloaded from "  + fileName);
         return true;
-    }
-    else {
-        prog->print("Testset didn't download. Nothing be done.");
-        testText = "";
-        return false;
-    }
-
 }
 bool EwmTesting::startTesting()
 {
@@ -145,36 +150,21 @@ bool EwmTesting::startTesting()
     return true;
 
 }
-bool EwmTesting::setProgramCode(QString  filename){
-
-    if (filename.toStdString() != "") {
-        QString str;
-
-
-        QFile file( filename);
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-        QTextStream *in;
-        in = new QTextStream(&file);
-        str = in->readAll();
-        file.close();
+bool EwmTesting::setProgramCode(QString  str, QString filename){
 
         prog->setCodeText(str);
         prog->print("Program downloaded from " + filename);
         return true;
-    }
-    prog->setCodeText("");
-    return false;
-
 }
 
 void EwmTesting::saveProgram(QString codeText)
 {
-    QFile file(testPath);
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-    out << codeText;
-    prog->setCodeText(codeText);
-    file.close();
+//    QFile file(testPath);
+//    file.open(QIODevice::WriteOnly | QIODevice::Text);
+//    QTextStream out(&file);
+//    out << codeText;
+//    prog->setCodeText(codeText);
+//    file.close();
 }
 
 void EwmTesting::initMemory(QMap<QString, int>  *test ) {

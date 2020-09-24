@@ -5,6 +5,8 @@
 
 
 
+
+
 class EWM_TEST EwmTesting{
 private:
     TestsetParser *parser;
@@ -22,12 +24,12 @@ public:
     EwmTesting(QString, QString );
     EwmTesting( );
     ~EwmTesting( );
-    bool downloadTestset(QString);
-    bool setProgramCode(QString);
+    bool downloadTestset(QString, QString);
+    bool setProgramCode(QString, QString);
     bool compile();
     bool startTesting();
     bool makeStep();
-    QTime timer;
+    QElapsedTimer timer;
     AllMemory * allMemory;
 
     bool run();

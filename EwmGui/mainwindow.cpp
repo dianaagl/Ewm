@@ -8,6 +8,7 @@
 #include <iostream>
 #include <QFileDialog>
 
+
 #define BEGIN_CONST 48
 #define END_CONST 49
 #define DOT_CONST 50
@@ -120,33 +121,40 @@ void MainWindow::on_NewButton_clicked(){
 }
 
 void MainWindow::on_OpenButton_clicked(){
+    auto fileContentReady = [this](const QString &fileName, const QByteArray &fileContent) {
+            if (fileName.isEmpty()) {
+                // No file was selected
+                qDebug() << fileName << endl;
+            } else {
+                qDebug() << fileContent << endl;
+                this->ewmPrac->setProgramCode((QString)fileContent, fileName);
+                this->testPath = fileName;
+                codeeditor->setPlainText(ewmPrac->getProgramCode());
+                errorWindow->addItems(*ewmPrac->prog->errorWindow);
+                compile();
 
-    QString file_path =  testPath;
-    file_path = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                               file_path,
-                                                               tr("Text files (*.txt)"));
+           }
+           QFileInfo fi(fileName);
+           qDebug() << "path: " << fi.path() << endl;
 
-    ewmPrac->setProgramCode(file_path);
-    testPath = file_path;
-
-    codeeditor->setPlainText(ewmPrac->getProgramCode());
-    errorWindow->addItems(*ewmPrac->prog->errorWindow);
-    compile();
+        };
+        QFileDialog::getOpenFileContent("Text (*.txt)",  fileContentReady);
 }
 
 void MainWindow::on_SaveButton_clicked(){
-   ewmPrac->saveProgram(codeeditor->toPlainText());
+     QFileDialog::saveFileContent(codeeditor->toPlainText().toUtf8(), "prog");
+     ewmPrac->saveProgram(codeeditor->toPlainText());
 }
 
 
 void MainWindow::on_SaveAsButton_clicked()
 {
-
-    QString FilePath = QFileDialog::getSaveFileName(this, tr("Save File As"),
-                                            QDir::homePath(),
-                                            tr("Text files (*.txt)"));
-   ewmPrac->testPath = FilePath;
-   testPath = FilePath;
+    QFileDialog::saveFileContent(codeeditor->toPlainText().toUtf8(), "prog");
+//    QString FilePath = QFileDialog::getSaveFileName(this, tr("Save File As"),
+//                                            QDir::homePath(),
+//                                            tr("Text files (*.txt)"));
+//   ewmPrac->testPath = FilePath;
+//   testPath = FilePath;
    ewmPrac->saveProgram(codeeditor->toPlainText());
 }
 
@@ -286,15 +294,23 @@ void MainWindow::on_aboutButton_clicked()
 
 void MainWindow::on_downloadTestsetButton_clicked()
 {
-    QString tmpTestPath = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                       testPath,
-                                                       tr("Testset files (*.testset)"));
-    errorWindow->clear();
-    ewmPrac->downloadTestset(tmpTestPath);
-    testPath = tmpTestPath;
-    updateRegisters();
-    updateMemoryTable();
-    errorWindow->addItems(*ewmPrac->prog->errorWindow);
+    auto fileContentReady = [this](const QString &fileName, const QByteArray &fileContent) {
+            if (fileName.isEmpty()) {
+                ewmPrac->prog->print("Testset didn't download. Nothing be done.");
+                testText = "";
+                qDebug() << fileName << endl;
+            } else {
+
+                errorWindow->clear();
+                ewmPrac->downloadTestset((QString)fileContent, fileName);
+                QFileInfo fi(fileName);
+                testPath = fi.path();
+                updateRegisters();
+                updateMemoryTable();
+                errorWindow->addItems(*ewmPrac->prog->errorWindow);
+           }
+        };
+        QFileDialog::getOpenFileContent("Text (*.txt)",  fileContentReady);
 }
 
 

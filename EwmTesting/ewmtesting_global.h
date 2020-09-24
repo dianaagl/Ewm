@@ -6,7 +6,9 @@
 #include "progaramm.h"
 #include <QtCore/qglobal.h>
 #include<QString>
-#include <QTime>
+
+#include <QElapsedTimer>
+
 
 
 

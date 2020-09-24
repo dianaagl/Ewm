@@ -4,6 +4,8 @@
 TARGET = EwmTesting
 TEMPLATE = lib
 ICON = ic.icns
+CONFIG += c++14
+
 HEADERS = \
    $$PWD/allmemory.h \
    $$PWD/ewmtesting.h \
@@ -24,8 +26,4 @@ SOURCES = \
 INCLUDEPATH = \
     $$PWD/.
 
-#DEFINES = 
-
-RESOURCES += \
-    res.qrc
 

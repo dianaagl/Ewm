@@ -9,8 +9,7 @@ QT -=gui declarative
 DEPENDPATH += .
 INCLUDEPATH += .
 
-CONFIG+=warn_off
-CONFIG += c++11
+CONFIG += c++14
 
 # Input
 HEADERS += about.h \
