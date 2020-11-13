@@ -29,12 +29,7 @@ void TestsetParser::parse() { //читает данные всего testset
     _isValid = true;
     int id = 1;
     QXmlStreamReader parser(testText);
-    /*while (!parser.atEnd() && !parser.hasError()) {
-        //qDebug() << parser.name() << " " << parser.text() << endl;
-        parser.readNext();
-    }
-    //qDebug() << parser.hasError() << endl;
-    return;*/
+
     parser.readNext();
     if (parser.tokenType() != QXmlStreamReader::StartDocument) {
         comment = "There isn't start tag.";

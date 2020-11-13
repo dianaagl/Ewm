@@ -10,9 +10,8 @@ EwmTesting::EwmTesting(QString  codeFilename, QString  testFileName)
 
     parser = NULL;
     allMemory = new AllMemory(64,8);
-    //prog->print(codeFilename.toStdString().c_str());
-    qDebug() <<"debug started";
     prog = new Progaramm(allMemory);
+
     if (codeFilename.toStdString() != "") {
         QString str;
 
@@ -37,6 +36,7 @@ EwmTesting::EwmTesting(QString  codeFilename, QString  testFileName)
         file.close();
         downloadTestset(str, testFileName);
     }
+
      timer.start();
 }
 EwmTesting::EwmTesting(){

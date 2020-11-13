@@ -5,7 +5,7 @@
 TEMPLATE = app
 TARGET = eprak
 QT += widgets
-QT -=gui declarative
+QT -= gui declarative opengl
 DEPENDPATH += .
 INCLUDEPATH += .
 

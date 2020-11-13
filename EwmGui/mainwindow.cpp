@@ -166,7 +166,6 @@ MainWindow::~MainWindow()
 
 bool MainWindow::makeStepUpdate()
 {
-    qDebug() <<  "equal " << ewmPrac->prog->getCodeText().compare(codeeditor->toPlainText());
     if(ewmPrac->prog->getCodeText().compare(codeeditor->toPlainText()) != 0)
     {
         on_stopButton_clicked();
@@ -209,7 +208,6 @@ bool MainWindow::makeStep()
 
 void MainWindow::compile()
 {
-    qDebug() <<"compile mainWindow";
     errorWindow->clear();
     ewmPrac->prog->setCodeText(codeeditor->toPlainText());
     ewmPrac->prog->compile();
@@ -217,11 +215,6 @@ void MainWindow::compile()
     errorWindow->addItems(*ewmPrac->prog->errorWindow);
     saveMemoryTable();
 
-}
-
-void MainWindow::on_compileButton_clicked()
-{
-    MainWindow::compile();
 }
 
 void MainWindow::on_stepButton_clicked()
@@ -241,7 +234,6 @@ void MainWindow::on_runButton_clicked()
     }
 
     startTime = ewmPrac->timer.elapsed();
-    qDebug() << "startTime" << startTime;
     while (ewmPrac->prog-> currLine < ewmPrac->prog->lineCount-1)
     {
         this->makeStepUpdate();
@@ -250,7 +242,7 @@ void MainWindow::on_runButton_clicked()
             errorWindow->addItem(tr("Project stoped due to time-limit;"));
             break;
         }
-            qDebug() << "curTime" << (ewmPrac->timer.elapsed()-startTime)/1000;
+//            qDebug() << "curTime" << (ewmPrac->timer.elapsed()-startTime)/1000;
     }
     codeeditor->moveCursor(QTextCursor::Down);
 
@@ -342,16 +334,11 @@ void MainWindow::on_decRadioButton_clicked()
 
 void MainWindow::on_hexRadioButton_clicked()
 {
-     qDebug() << "hex button clicked";
     std::vector<QLineEdit*> edits ={ui->AxLineEdit,ui->BxLineEdit,ui->CxLineEdit,ui->DxLineEdit};
-//     for(int i = 0;i < edits.size();i++){
-//        allMemory->reg[i]->setVal(QString(edits[i]->text()));
-//        qDebug() << edits[i]->text() << allMemory->reg[i]->getVal();
-//     }
+
     allMemory->toConditionReg(2);
 
     for(int i = 0;i < edits.size();i++){
-            qDebug() << "mem" << allMemory->reg[i]->getVal();
         edits[i]->setValidator(hexRegValidator);
 
         edits[i]->setText(allMemory->reg[i]->getVal());
@@ -362,13 +349,11 @@ void MainWindow::key_get()
 {
     QObject* obj = sender();
 
-        qDebug() << "key get";
       if( obj == ui->AxLineEdit )
       {
           allMemory->reg[0]->setVal(QString(ui->AxLineEdit->text()));
           allMemory->reg[0]->key_get();
           ui->AxLineEdit->setText(allMemory->reg[0]->getVal());
-          qDebug() << allMemory->reg[0]->getVal();
       }
       if(obj == ui->BxLineEdit)
       {
@@ -415,7 +400,6 @@ void MainWindow::key_get()
           allMemory->reg[0]->setVal(QString(ui->AxLineEdit->text()));
           allMemory->reg[0]->key_get();
           ui->AxLineEdit->setText(allMemory->reg[0]->getVal());
-          qDebug() << allMemory->reg[0]->getVal();
 
           allMemory->reg[1]->setVal(QString(ui->BxLineEdit->text()));
           allMemory->reg[1]->key_get();
@@ -621,8 +605,6 @@ void MainWindow::on_memoryTableWidget_currentCellChanged(int currentRow, int cur
             item2->setValidator(hexRegValidator);
 
         item2->setText(allMemory->memory[previousRow*m +previousColumn].getVal());
-
-        qDebug() << item2->text();
     }
 //qDebug() <<  item->
     ;

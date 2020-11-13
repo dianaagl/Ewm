@@ -67,7 +67,6 @@ public:
 
 public slots:
     void updateMemoryCell();
-    void on_compileButton_clicked();
     void on_stepButton_clicked();
     void on_runButton_clicked();
     void on_stopButton_clicked();

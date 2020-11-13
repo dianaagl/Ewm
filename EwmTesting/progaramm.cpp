@@ -2,7 +2,6 @@
 #include "progaramm.h"
 void Progaramm::print(QString str){
     errorWindow->append(str);
-    qDebug() << str;
 }
 Progaramm::Progaramm(QString  codeText, AllMemory * allMemory)
 {
@@ -52,9 +51,7 @@ bool Progaramm::isCompiled(){
 
 void Progaramm::compile()
 {
-    qDebug() <<"compile programm";
     if(compiled) return;
-    qDebug() <<"compiled!";
     commandString.clear();
     commandInt.clear();
     lineNumber.clear();
@@ -66,7 +63,6 @@ void Progaramm::compile()
 
     currLine = 1;
 
-    qDebug() << "compile";
     codeText = codeText.toUpper();
 
     if (!codeText.endsWith("END"))

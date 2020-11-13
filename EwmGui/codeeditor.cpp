@@ -18,7 +18,6 @@ CodeEditor::CodeEditor(QWidget *parent) : QPlainTextEdit(parent)
 
     if(color.red() == 0 && color.green() == 0 && color.blue() == 0)
     {
-         qDebug() << color.red() << color.green() << color.blue();
          lineColor = QColor(QColor(Qt::blue).lighter(150));
     }
     else
